@@ -7,7 +7,7 @@ public class FirebaseManager {
 
     private FirebaseManager() {
         // Initialize the database with your specific URL
-        database = FirebaseDatabase.getInstance("https://finalprojectv1-762fe-default-rtdb.europe-west1.firebasedatabase.app");
+        database = FirebaseDatabase.getInstance("Add-The-Detabase-URL");
     }
 
     public static synchronized FirebaseManager getInstance() {
