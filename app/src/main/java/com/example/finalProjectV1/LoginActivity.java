@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onGoogleSignInSuccess(FirebaseUser user) {
         String email = user.getEmail();
         Toast.makeText(this, "Signed in as: " + email, Toast.LENGTH_SHORT).show();
-        Intent homeIntent = new Intent(this, HomeActivity.class);
+        Intent homeIntent = new Intent(this, mainPageActivity.class);
         startActivity(homeIntent);
     }
     public void onFirstTimeSignIn(FirebaseUser user) {

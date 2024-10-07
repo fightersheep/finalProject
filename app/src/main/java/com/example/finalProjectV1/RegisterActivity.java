@@ -129,7 +129,7 @@ public class RegisterActivity extends AppCompatActivity {
             mDatabase.child("users").child(userId).setValue(userMap)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Intent homeIntent = new Intent(this, HomeActivity.class);
+                            Intent homeIntent = new Intent(this, mainPageActivity.class);
                             startActivity(homeIntent);
                             finish();
                         } else {
