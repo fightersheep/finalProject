@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
         } else if (v.getId() == notiButton.getId()) {
-            Intent intent = new Intent(this, friendList.class);
+            Intent intent = new Intent(this, mainPageActivity.class);
             long delayInMillis = 5000; // 5 seconds
             String title = "My Notification";
             String message = "This is a scheduled notification";

@@ -21,7 +21,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class HomeFragment extends Fragment {
-
+    private static final String ARG_PAGE_NUMBER = "page_number";
     private TextView tvName, tvEmail, tvLocation, tvDateOfBirth, tvExperience, tvGender, tvCountry;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -32,7 +32,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseManager.getInstance().getDatabase().getReference();
 
         tvName = view.findViewById(R.id.tvName);
         tvEmail = view.findViewById(R.id.tvEmail);

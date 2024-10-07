@@ -3,13 +3,16 @@ package com.example.finalProjectV1;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -20,7 +23,9 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-public class NotesActivity extends AppCompatActivity implements FirebaseNoteHelper.FirebaseNoteListener {
+
+public class NotesFragment extends Fragment implements FirebaseNoteHelper.FirebaseNoteListener {
+
     private CustomAlertDialog customAlertDialog;
     private RecyclerView recyclerView;
     private NoteAdapter noteAdapter;
@@ -28,16 +33,29 @@ public class NotesActivity extends AppCompatActivity implements FirebaseNoteHelp
     private FirebaseNoteHelper firebaseNoteHelper;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notes);
-        customAlertDialog = new CustomAlertDialog(this);
-        recyclerView = findViewById(R.id.recyclerView);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view= inflater.inflate(R.layout.fragment_notes, container, false);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        customAlertDialog = new CustomAlertDialog(this.getContext());
+        notesInit();
+        FloatingActionButton fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(view.getContext(), AddNoteActivity.class));
+            }
+        });
+        return view;
+
+    }
+    public void notesInit(){
         int numberOfColumns = 2;
-        recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+        recyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), numberOfColumns));
 
         noteList = new ArrayList<>();
-        noteAdapter = new NoteAdapter(noteList, this);
+        noteAdapter = new NoteAdapter(noteList, this.getContext());
         recyclerView.setAdapter(noteAdapter);
 
         firebaseNoteHelper = new FirebaseNoteHelper(this);
@@ -63,15 +81,6 @@ public class NotesActivity extends AppCompatActivity implements FirebaseNoteHelp
         };
         ItemTouchHelper helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(recyclerView);
-
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(NotesActivity.this, AddNoteActivity.class));
-            }
-        });
     }
 
     @Override
@@ -98,6 +107,6 @@ public class NotesActivity extends AppCompatActivity implements FirebaseNoteHelp
 
     @Override
     public void onError(String error) {
-        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.getContext(), error, Toast.LENGTH_SHORT).show();
     }
 }

@@ -21,11 +21,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="34">
         <activity
-            android:name=".HomeActivity"
+            android:name=".mainPageActivity"
             android:exported="false" />
-        <activity
-            android:name=".friendList"
-            android:exported="false" />
+
 
         <receiver android:name=".NotificationHelper$NotificationReceiver" />
 
@@ -34,9 +32,6 @@
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".NotesActivity"
             android:exported="false" />
         <activity
             android:name=".AddNoteActivity"
