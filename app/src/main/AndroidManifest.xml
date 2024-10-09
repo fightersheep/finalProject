@@ -21,9 +21,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="34">
         <activity
+            android:name=".AddFriendActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FriendDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".mainPageActivity"
             android:exported="false" />
-
 
         <receiver android:name=".NotificationHelper$NotificationReceiver" />
 
