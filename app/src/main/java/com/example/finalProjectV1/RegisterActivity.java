@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -101,6 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
+
         String firstName = etFirstName.getText().toString().trim();
         String lastName = etLastName.getText().toString().trim();
         String location = etLocation.getText().toString().trim();
@@ -115,9 +115,10 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         FirebaseUser user = mAuth.getCurrentUser();
+        String userId = user.getUid();
+
         if (user != null) {
-            String userId = user.getUid();
-            Map<String, Object> userMap = new HashMap<>();
+                Map<String, Object> userMap = new HashMap<>();
             userMap.put("firstName", firstName);
             userMap.put("lastName", lastName);
             userMap.put("location", location);

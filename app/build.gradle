@@ -45,6 +45,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:20.5.0'
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-database:21.0.0'
+    implementation 'com.google.firebase:firebase-functions:20.2.2'
+
 
 
     // RecyclerView
@@ -52,6 +54,9 @@ dependencies {
 
     // CardView (for note item layout)
     implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.activity:activity:1.8.0'
+    implementation 'com.google.android.gms:play-services-maps:18.2.0'
+
 
     // Testing dependencies
     testImplementation 'junit:junit:4.13.2'

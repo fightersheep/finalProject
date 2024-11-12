@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 
 public class CustomAlertDialog {
 
-    private Context context;
+    private final Context context;
 
     public CustomAlertDialog(Context context) {
         this.context = context;

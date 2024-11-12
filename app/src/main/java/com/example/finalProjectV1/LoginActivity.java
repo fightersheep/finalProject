@@ -28,8 +28,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         // Initialize UI elements
-        emailEditText = findViewById(R.id.emailEditText);
-        passwordEditText = findViewById(R.id.passwordEditText);
+
         loginButton = findViewById(R.id.loginButton);
         googleSignInButton = findViewById(R.id.googleSignInButton);
 

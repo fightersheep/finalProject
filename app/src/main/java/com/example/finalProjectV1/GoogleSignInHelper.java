@@ -28,19 +28,19 @@ public class GoogleSignInHelper {
     private static final int RC_SIGN_IN = 9001;
 
     // Client for interacting with the Google Sign-In API
-    private GoogleSignInClient mGoogleSignInClient;
+    private final GoogleSignInClient mGoogleSignInClient;
 
     // Firebase Authentication instance
-    private FirebaseAuth mAuth;
+    private final FirebaseAuth mAuth;
 
     // Firebase Realtime Database instance
-    private DatabaseReference mDatabase;
+    private final DatabaseReference mDatabase;
 
     // Reference to the activity using this helper
-    private Activity mActivity;
+    private final Activity mActivity;
 
     // Listener to communicate sign-in results back to the activity
-    private OnGoogleSignInListener mListener;
+    private final OnGoogleSignInListener mListener;
 
     // Interface for callback methods
     public interface OnGoogleSignInListener {
@@ -58,7 +58,7 @@ public class GoogleSignInHelper {
 
         // Configure Google Sign-In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(activity.getString(R.string.default_web_client_id))
+                .requestIdToken(activity.getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(activity, gso);
