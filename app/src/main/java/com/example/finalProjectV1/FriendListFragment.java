@@ -27,7 +27,7 @@ import java.util.List;
 public class FriendListFragment extends Fragment {
     private RecyclerView recyclerView;
     private FriendAdapter friendAdapter;
-    private List<Friend> friendList;
+    private List<User> friendList;
     private DatabaseReference databaseReference;
     private FloatingActionButton addFriendButton;
 
@@ -68,10 +68,10 @@ public class FriendListFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 friendList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Friend friend = snapshot.getValue(Friend.class);
-                    if (friend != null) {
-                        friend.setUserId(snapshot.getKey());
-                        friendList.add(friend);
+                    User User = snapshot.getValue(User.class);
+                    if (User != null) {
+                        User.setUserId(snapshot.getKey());
+                        friendList.add(User);
                     }
                 }
                 friendAdapter.notifyDataSetChanged();

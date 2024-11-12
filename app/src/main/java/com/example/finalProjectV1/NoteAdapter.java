@@ -15,8 +15,8 @@ import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
 
-    private List<Note> noteList;
-    private Context context;
+    private final List<Note> noteList;
+    private final Context context;
 
     public NoteAdapter(List<Note> noteList, Context context) {
         this.noteList = noteList;

@@ -1,11 +1,20 @@
 package com.example.finalProjectV1;
+import androidx.annotation.NonNull;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FirebaseManager {
     private static FirebaseManager instance;
-    private FirebaseDatabase database;
+    private static FirebaseDatabase database;
 
     private FirebaseManager() {
         // Initialize the database with your specific URL
@@ -18,32 +27,57 @@ public class FirebaseManager {
         }
         return instance;
     }
-    public static void getUserIdFromEmail(String email, OnUserIdFetchedListener listener) {
-        FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        boolean isNewUser = task.getResult().getSignInMethods().isEmpty();
-                        if (!isNewUser) {
-                            // User exists, now get the user ID
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            if (user != null && user.getEmail().equals(email)) {
-                                String userId = user.getUid();
-                                listener.onUserIdFetched(userId);
-                            } else {
-                                listener.onError("User not found or not logged in");
+    public static void searchUsers(String searchQuery, OnSearchResultListener listener) {
+        DatabaseReference usersRef = getInstance().getDatabase().getReference("users");
+        usersRef.keepSynced(true);
+
+        usersRef.orderByChild("name")
+                .startAt(searchQuery)
+                .endAt(searchQuery + "\uf8ff")
+                .limitToFirst(20)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List<User> usersList = new ArrayList<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            User user = snapshot.getValue(User.class);
+                            if (user != null) {
+                                usersList.add(user);
                             }
-                        } else {
-                            listener.onError("User does not exist");
                         }
-                    } else {
-                        listener.onError("Error fetching sign-in methods: " + task.getException().getMessage());
+                        listener.onSearchComplete(usersList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        listener.onSearchError(error.getMessage());
                     }
                 });
     }
+    public static void searchUserWithDiscriminator(String username, String discriminator, OnSearchResultListener listener) {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+        usersRef.keepSynced(true);
 
-    public interface OnUserIdFetchedListener {
-        void onUserIdFetched(String userId);
-        void onError(String errorMessage);
+        usersRef.orderByChild("name")
+                .equalTo(username)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List<User> usersList = new ArrayList<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            User user = snapshot.getValue(User.class);
+                            if (user != null && (discriminator.isEmpty() || user.getDiscriminator().compareTo(discriminator)==0)) {
+                                usersList.add(user);
+                            }
+                        }
+                        listener.onSearchComplete(usersList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        listener.onSearchError(error.getMessage());
+                    }
+                });
     }
 
     public FirebaseDatabase getDatabase() {

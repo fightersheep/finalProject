@@ -11,9 +11,9 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.List;
 
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendViewHolder> {
-    private List<Friend> friendList;
+    private final List<User> friendList;
 
-    public FriendAdapter(List<Friend> friendList) {
+    public FriendAdapter(List<User> friendList) {
         this.friendList = friendList;
     }
 
@@ -26,7 +26,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.FriendView
 
     @Override
     public void onBindViewHolder(@NonNull FriendViewHolder holder, int position) {
-        Friend friend = friendList.get(position);
+        User friend = friendList.get(position);
         holder.nameTextView.setText(friend.getName());
 
         holder.itemView.setOnClickListener(v -> {

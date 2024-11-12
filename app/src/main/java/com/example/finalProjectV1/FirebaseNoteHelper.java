@@ -16,8 +16,8 @@ import java.util.List;
 
 public class FirebaseNoteHelper {
 
-    private DatabaseReference notesRef;
-    private FirebaseNoteListener listener;
+    private final DatabaseReference notesRef;
+    private final FirebaseNoteListener listener;
 
     public interface FirebaseNoteListener {
         void onNotesLoaded(List<Note> notes);

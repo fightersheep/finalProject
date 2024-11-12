@@ -27,10 +27,10 @@ public class FriendDetailActivity extends AppCompatActivity {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Friend friend = dataSnapshot.getValue(Friend.class);
+                User friend = dataSnapshot.getValue(User.class);
                 if (friend != null) {
                     nameTextView.setText(friend.getName());
-                    emailTextView.setText(friend.getEmail());
+                    //emailTextView.setText(friend.getEmail());
                 }
             }
 

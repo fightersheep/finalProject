@@ -34,13 +34,13 @@ public class HomeFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseManager.getInstance().getDatabase().getReference();
 
-        tvName = view.findViewById(R.id.tvName);
-        tvEmail = view.findViewById(R.id.tvEmail);
-        tvLocation = view.findViewById(R.id.tvLocation);
-        tvDateOfBirth = view.findViewById(R.id.tvDateOfBirth);
-        tvExperience = view.findViewById(R.id.tvExperience);
-        tvGender = view.findViewById(R.id.tvGender);
-        tvCountry = view.findViewById(R.id.tvCountry);
+//                tvName = view.findViewById(R.id.tvName);
+//                tvEmail = view.findViewById(R.id.tvEmail);
+//                tvLocation = view.findViewById(R.id.tvLocation);
+//                tvDateOfBirth = view.findViewById(R.id.tvDateOfBirth);
+//                tvExperience = view.findViewById(R.id.tvExperience);
+//                tvGender = view.findViewById(R.id.tvGender);
+//                tvCountry = view.findViewById(R.id.tvCountry);
 
         loadUserData();
 
@@ -62,13 +62,13 @@ public class HomeFragment extends Fragment {
                         String gender = dataSnapshot.child("gender").getValue(String.class);
                         String country = dataSnapshot.child("country").getValue(String.class);
 
-                        tvName.setText(String.format("Name: %s %s", firstName, lastName));
-                        tvEmail.setText(String.format("Email: %s", currentUser.getEmail()));
-                        tvLocation.setText(String.format("Location: %s", location));
-                        tvDateOfBirth.setText(String.format("Date of Birth: %s", dateOfBirth));
-                        tvExperience.setText(String.format("Tennis Experience: %s", experience));
-                        tvGender.setText(String.format("Gender: %s", gender));
-                        tvCountry.setText(String.format("Country: %s", country));
+//                        tvName.setText(String.format("Name: %s %s", firstName, lastName));
+//                        tvEmail.setText(String.format("Email: %s", currentUser.getEmail()));
+//                        tvLocation.setText(String.format("Location: %s", location));
+//                        tvDateOfBirth.setText(String.format("Date of Birth: %s", dateOfBirth));
+//                        tvExperience.setText(String.format("Tennis Experience: %s", experience));
+//                        tvGender.setText(String.format("Gender: %s", gender));
+//                        tvCountry.setText(String.format("Country: %s", country));
                     }
                 }
 

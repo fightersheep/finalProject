@@ -2,7 +2,7 @@ package com.example.finalProjectV1;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.Manifest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -14,6 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button loginButton;
     private Button registerButton;
-    private Button notiButton;
 
 
     @Override
@@ -40,11 +40,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FirebaseManager.getInstance(); // This initializes the FirebaseManager
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
-        notiButton = findViewById(R.id.notiButton);
-        notiButton.setOnClickListener(this);
         FirebaseApp.initializeApp(this);
+        FirebaseManager.getInstance();
         loginButton.setOnClickListener(this);
         registerButton.setOnClickListener(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
+        }
     }
 
     @Override
@@ -55,12 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (v.getId() == registerButton.getId()) {
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
-        } else if (v.getId() == notiButton.getId()) {
-            Intent intent = new Intent(this, mainPageActivity.class);
-            long delayInMillis = 5000; // 5 seconds
-            String title = "My Notification";
-            String message = "This is a scheduled notification";
-            NotificationHelper.scheduleNotification(this, delayInMillis, title, message, intent);
+
         }
 
     }
