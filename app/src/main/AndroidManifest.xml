@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -18,43 +20,56 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/finalProjectV1"
+        android:layoutDirection="ltr"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true"
         tools:targetApi="34">
         <activity
-            android:name=".activity_chat"
+            android:name=".Activities.TournamentDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".stam"
+            android:name=".Activities.CreateTournamentActivity"
             android:exported="false" />
         <activity
-            android:name=".AddFriendActivity"
+            android:name=".Activities.TournamentActivity"
             android:exported="false" />
         <activity
-            android:name=".FriendDetailActivity"
+            android:name=".Activities.FriendRequestDetails"
             android:exported="false" />
         <activity
-            android:name=".mainPageActivity"
+            android:name=".Activities.settingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.activity_chat"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.AddFriendActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.FriendDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".fragments.mainPageActivity"
             android:exported="false" />
 
-        <receiver android:name=".NotificationHelper$NotificationReceiver" />
+        <receiver android:name=".notification.NotificationHelper$NotificationReceiver" />
 
         <activity
-            android:name=".RegisterActivity"
+            android:name=".Activities.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".AddNoteActivity"
+            android:name=".Activities.AddNoteActivity"
             android:exported="false" />
         <activity
-            android:name=".EditNoteActivity"
+            android:name=".Activities.EditNoteActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -21,6 +21,11 @@
         <item>Australia</item>
         <item>Israel</item>
     </string-array>
+    <string-array name="tournament_types">
+        <item>Single Elimination</item>
+        <item>Round Robin</item>
+        <item>Double Elimination</item>
+    </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

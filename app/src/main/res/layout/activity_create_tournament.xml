@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+    <EditText
+        android:id="@+id/editTournamentName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tournament Name"
+        android:layout_marginBottom="8dp"/>
+
+    <Spinner
+        android:id="@+id/spinnerTournamentType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/editTournamentDateTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select Date and Time"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/editTournamentLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tournament Location"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/editMaxParticipants"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Max Participants"
+        android:inputType="number"
+        android:layout_marginBottom="16dp"/>
+    <EditText
+        android:id="@+id/editMinPlayers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/editRounds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:layout_marginBottom="8dp"/>
+
+    <Button
+        android:id="@+id/buttonCreate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create Tournament"/>
+
+</LinearLayout>
