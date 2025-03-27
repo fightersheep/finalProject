@@ -1,5 +1,7 @@
 package com.example.finalProjectV1.classes;
 
+import static com.example.finalProjectV1.TournamentType.SINGLE_ELIMINATION;
+
 import android.util.Log;
 
 import com.example.finalProjectV1.firebase.FirebaseTournamentHelper;
@@ -11,21 +13,32 @@ import java.util.UUID;
 
 // SingleEliminationTournament.java
 public class SingleEliminationTournament extends Tournament {
+    protected List<Round> rounds;
     public SingleEliminationTournament() {
         super();
-        this.type = "SINGLE_ELIMINATION";
+        this.rounds = new ArrayList<>();
+        this.type = "Single Elimination";
     }
 
     public SingleEliminationTournament(String name, List<Round> rounds) {
         this();
         this.name = name;
         this.rounds = rounds;
-        this.type = "SINGLE_ELIMINATION";
+        this.type = "Single Elimination";
+    }
+
+    public List<Round> getRounds() {
+        return rounds;
+    }
+
+    public void setRounds(List<Round> rounds) {
+        this.rounds = rounds;
     }
 
     public SingleEliminationTournament(String tournamentId, int maxParticipants, String location, String startdate, List<ShortUser> participants, List<Round> rounds, String type, String name) {
         super(tournamentId, maxParticipants, location, startdate, participants, rounds, type, name);
     }
+
 
 
 
@@ -81,15 +94,15 @@ public class SingleEliminationTournament extends Tournament {
 
     private void updateRound(int roundIndex, int initialCompetitors,Round round) {
         int matchesInRound = (int) Math.ceil(initialCompetitors / Math.pow(2, roundIndex+1));
-        Log.d("createRound", "sa:"+String.valueOf(Math.pow(2, roundIndex)));
-        Log.d("createRound", "oa:"+String.valueOf(roundIndex));
+        Log.d("createRound", "sa:"+ Math.pow(2, roundIndex));
+        Log.d("createRound", "oa:"+ roundIndex);
 
-        Log.d("createRound", "sa:"+String.valueOf(initialCompetitors));
+        Log.d("createRound", "sa:"+ initialCompetitors);
 
         for (int i = round.getMatches().size(); i < matchesInRound; i++) {
             Match match = createMatch(roundIndex, i);
-            Log.d("createRound", "sa:"+String.valueOf(roundIndex));
-            Log.d("createRound", "createRound:"+String.valueOf(matchesInRound));
+            Log.d("createRound", "sa:"+ roundIndex);
+            Log.d("createRound", "createRound:"+ matchesInRound);
             round.getMatches().add(match);
         }
 
@@ -105,20 +118,20 @@ public class SingleEliminationTournament extends Tournament {
     }
 
     public void MoveParticipantOn(int NewRound, int matchNum, Competitor winner) {
+        Log.d("TAG", "1MoveParticipantOn: "+matchNum/2);
+        Log.d("TAG", "1MoveParticipantOn: "+matchNum);
 
         Match next = rounds.get(NewRound).getMatches().get(matchNum/2);
         if (next.getCompetitor1().getName().compareTo("TBD")==0){
-            next.setCompetitor1(new Competitor(winner.getName(), winner.getId()));
+            next.setCompetitor1(winner.Pcopy());
         }
         else{
-            next.setCompetitor2(new Competitor(winner.getName(), winner.getId()));
+            next.setCompetitor2(winner.Pcopy());
         }
-        FirebaseTournamentHelper tournamentHelper=  new FirebaseTournamentHelper();
-        tournamentHelper.updateMatch(this.getTournamentId(), NewRound, next.getMatchId(), next);
 
     }
 
-    public void initializeTournament(OnAddToFirebase lisiner) {
+    public void initializeTournament() {
         // Clear existing rounds
         this.rounds = new ArrayList<>();
         Log.d("TAG", "initializeTournament: ");
@@ -169,9 +182,9 @@ public class SingleEliminationTournament extends Tournament {
 
             rounds.add(newRound);
         }
-        FirebaseTournamentHelper helper = new FirebaseTournamentHelper();
-        helper.saveTournament(this, lisiner);
+
     }
+
 
 
 

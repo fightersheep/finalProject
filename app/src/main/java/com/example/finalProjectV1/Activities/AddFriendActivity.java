@@ -86,7 +86,7 @@ public class AddFriendActivity extends AppCompatActivity {
                 searchUserWithDiscriminator(username, discriminator);
             }
         } else {
-            username = input.toString().trim();
+            username = input.trim();
             performSearch(username);
         }
 

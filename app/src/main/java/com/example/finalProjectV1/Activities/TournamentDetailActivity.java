@@ -2,6 +2,7 @@ package com.example.finalProjectV1.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,7 +14,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.finalProjectV1.R;
+import com.example.finalProjectV1.classes.DoubleEliminationTournament;
 import com.example.finalProjectV1.classes.ShortUser;
+import com.example.finalProjectV1.classes.SingleEliminationTournament;
 import com.example.finalProjectV1.classes.Tournament;
 import com.example.finalProjectV1.firebase.FirebaseManager;
 import com.example.finalProjectV1.firebase.dataManeger;
@@ -147,8 +150,21 @@ public class TournamentDetailActivity extends AppCompatActivity {
 
 
     private void observeTournament() {
-        Intent intent = new Intent(this,TournamentActivity.class);
+        Intent intent = null;
+        switch (type) {
+            case "Single Elimination":
+                intent = new Intent(this,TournamentActivity.class);
+
+                break;
+            case "Double Elimination":
+                 intent = new Intent(this,DoubleEliminationActivity.class);
+
+                // Add more tournament types here
+            default:
+                break;
+        }
         intent.putExtra("tournamentId",tournamentId);
+        Log.d("TAG", "observeTournament: "+tournamentId);
         startActivity(intent);
 
     }

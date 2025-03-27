@@ -10,18 +10,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalProjectV1.classes.Competitor;
-import com.example.finalProjectV1.classes.Match;
-import com.example.finalProjectV1.classes.Round;
+import com.example.finalProjectV1.classes.DoubleEliminationTournament;
+import com.example.finalProjectV1.classes.SingleEliminationTeams;
 import com.example.finalProjectV1.classes.SingleEliminationTournament;
 import com.example.finalProjectV1.classes.Tournament;
+import com.example.finalProjectV1.firebase.FirebaseTournamentHelper;
 import com.example.finalProjectV1.firebase.interfaces.OnAddToFirebase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TournamentPagerAdapter extends RecyclerView.Adapter<TournamentPagerAdapter.StageViewHolder> {
-    private Context context;
-    private Tournament tournament;
+    protected Context context;
+    protected Tournament tournament;
+    private final List<Integer> scrollPositions = new ArrayList<>();
 
     public TournamentPagerAdapter(Context context) {
         this.context = context;
@@ -30,11 +32,8 @@ public class TournamentPagerAdapter extends RecyclerView.Adapter<TournamentPager
 
     public void setTournament(Tournament Set) {
 
-
-            this.tournament = Set;
-            Log.e("TAG", "setTournament: ");
+        this.tournament = Set;
             notifyDataSetChanged();
-
     }
 
     public void addCompetitor(Competitor competitor) {
@@ -79,23 +78,39 @@ public class TournamentPagerAdapter extends RecyclerView.Adapter<TournamentPager
         holder.recyclerView.setLayoutParams(new RecyclerView.LayoutParams(
                 RecyclerView.LayoutParams.MATCH_PARENT,
                 RecyclerView.LayoutParams.MATCH_PARENT));
-        holder.recyclerView.setAdapter(new MatchAdapter(tournament, position));
+        SingleEliminationAdapter matchAdapter = null;
+        if (!tournament.isDoubles()) {
+            matchAdapter = new SingleEliminationAdapter(tournament, position);
+        }
+        else {
+            matchAdapter = new SingleEliminationAdapterTeams(tournament, position);
+            Log.d("TAG", "onBindViewHolder: wellldonnnn");
+        }
+        holder.recyclerView.setAdapter(matchAdapter);
     }
 
     @Override
     public int getItemCount() {
         return tournament.getRounds().size();
     }
-    public void initializeTournament(){
+
+    public void initializeTournament() {
         if (!tournament.isStarted()) {
-            tournament.initializeTournament(new OnAddToFirebase() {
+            Log.d("TAG", "onDataChange1: " +tournament.getAdmin().getName());
+
+            tournament.initializeTournament();
+            Log.d("TAG", "onDataChange3: " +tournament.getAdmin().getName());
+
+            FirebaseTournamentHelper helper = new FirebaseTournamentHelper();
+            helper.saveTournament(tournament, new OnAddToFirebase() {
                 @Override
                 public void OnComplete() {
-
+                    Log.d("TAG", "OnComplete: saved");
                 }
 
                 @Override
                 public void onSearchError(String error) {
+                    Log.d("TAG", "onDataChange: error" +error);
 
                 }
             });

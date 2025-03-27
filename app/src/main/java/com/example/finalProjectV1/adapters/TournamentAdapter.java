@@ -18,7 +18,7 @@ import com.example.finalProjectV1.classes.Tournament;
 import java.util.List;
 
 public class TournamentAdapter extends RecyclerView.Adapter<TournamentAdapter.TournamentViewHolder> {
-    private List<Tournament> tournamentList;
+    protected List<Tournament> tournamentList;
 
     public TournamentAdapter(List<Tournament> tournamentList) {
         this.tournamentList = tournamentList;

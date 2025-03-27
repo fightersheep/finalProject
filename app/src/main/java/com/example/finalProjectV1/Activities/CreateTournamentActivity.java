@@ -22,12 +22,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.finalProjectV1.R;
 import com.example.finalProjectV1.TournamentType;
+import com.example.finalProjectV1.classes.DoubleEliminationTournament;
 import com.example.finalProjectV1.classes.ShortUser;
 import com.example.finalProjectV1.classes.SingleEliminationTournament;
 import com.example.finalProjectV1.classes.Tournament;
 import com.example.finalProjectV1.firebase.FirebaseManager;
 import com.example.finalProjectV1.firebase.dataManeger;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,6 +47,7 @@ public class CreateTournamentActivity extends AppCompatActivity {
     private EditText editRounds;
     private Tournament tournament;
     private Calendar selectedDateTime;
+    private Switch isDoubles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +63,7 @@ public class CreateTournamentActivity extends AppCompatActivity {
         editMinPlayers = findViewById(R.id.editMinPlayers);
         editRounds = findViewById(R.id.editRounds);
         selectedDateTime = Calendar.getInstance();
-
+        isDoubles = findViewById(R.id.isDoubles);
         editTournamentDateTime.setFocusable(false);
         editTournamentDateTime.setClickable(true);
         editTournamentDateTime.setOnClickListener(v -> showDateTimePicker());
@@ -76,7 +79,8 @@ public class CreateTournamentActivity extends AppCompatActivity {
         });
         setupTournamentTypeSpinner();
 
-        databaseReference = FirebaseManager.getInstance().getDatabase().getInstance().getReference("tournaments");
+        FirebaseManager.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference("tournaments");
         buttonCreate.setOnClickListener(v -> createTournament());
     }
 
@@ -102,6 +106,7 @@ public class CreateTournamentActivity extends AppCompatActivity {
                 editMinPlayers.setVisibility(View.VISIBLE);
                 editRounds.setVisibility(View.GONE);
                 editMinPlayers.setHint("Minimum Players (Must be power of 2)");
+                tournament = new DoubleEliminationTournament();
                 break;
 
             case ROUND_ROBIN:
@@ -167,7 +172,6 @@ public class CreateTournamentActivity extends AppCompatActivity {
         switch (type) {
             case SINGLE_ELIMINATION:
             case DOUBLE_ELIMINATION:
-                return isPowerOfTwo(minPlayers);
 
             case ROUND_ROBIN:
                 return minPlayers >= 3;
@@ -201,6 +205,7 @@ public class CreateTournamentActivity extends AppCompatActivity {
         tournament.setStartdate(editTournamentDateTime.getText().toString());
         tournament.setAdmin(new ShortUser(dataManeger.getUser()));
         tournament.setStarted(false);
+        tournament.setDoubles(isDoubles.isChecked());
 
 
         // Save to Firebase

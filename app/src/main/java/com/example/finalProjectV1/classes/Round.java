@@ -10,6 +10,7 @@ public class Round {
     private List<Match> matches;
 
     public Round() {
+        this.matches = new ArrayList<>();
         // Required empty constructor for Firebase
     }
 

@@ -18,6 +18,7 @@ import com.example.finalProjectV1.Activities.CreateTournamentActivity;
 import com.example.finalProjectV1.R;
 import com.example.finalProjectV1.adapters.TournamentAdapter;
 import com.example.finalProjectV1.classes.Competitor;
+import com.example.finalProjectV1.classes.DoubleEliminationTournament;
 import com.example.finalProjectV1.classes.Match;
 import com.example.finalProjectV1.classes.Round;
 import com.example.finalProjectV1.classes.ShortUser;
@@ -52,7 +53,8 @@ public class FindTournamentFragment extends Fragment {
         tournamentList = new ArrayList<>();
         adapter = new TournamentAdapter(tournamentList);
         recyclerView.setAdapter(adapter);
-        databaseReference = FirebaseDatabase.getInstance().getInstance().getReference("tournaments");
+        FirebaseDatabase.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference("tournaments");
         attachDatabaseListener();
 
          setupCreateButton();
@@ -71,15 +73,15 @@ public class FindTournamentFragment extends Fragment {
             @Override
             public void onChildAdded(@androidx.annotation.NonNull DataSnapshot snapshot, String previousChildName) {
                 String type = snapshot.child("type").getValue(String.class);
-                Tournament tournament;
+                Tournament tournament = null;
                 switch (type) {
                     case "Single Elimination":
                         tournament = snapshot.getValue(SingleEliminationTournament.class);
 
                         break;
-                    // Add more tournament types here
-                    default:
-                        tournament = snapshot.getValue(SingleEliminationTournament.class);
+
+                        case "Double Elimination": tournament = snapshot.getValue(DoubleEliminationTournament.class);
+                        default:
                         break;
                 }
 
@@ -92,7 +94,22 @@ public class FindTournamentFragment extends Fragment {
             @Override
             public void onChildChanged(@androidx.annotation.NonNull DataSnapshot snapshot, String previousChildName) {
                 String key = snapshot.child("tournamentId").getValue(String.class);
-                Tournament newValue = snapshot.getValue(SingleEliminationTournament.class);
+                String type = snapshot.child("type").getValue(String.class);
+                Tournament newValue = null;
+                switch (type) {
+                    case "Single Elimination":
+                        newValue = snapshot.getValue(SingleEliminationTournament.class);
+                        newValue.getAdmin();
+
+
+                        break;
+                    case "Double Elimination":
+                        newValue = snapshot.getValue(DoubleEliminationTournament.class);
+
+                        // Add more tournament types here
+                    default:
+                        break;
+                }
                 for (int i = 0; i < tournamentList.size(); i++) {
                     if (tournamentList.get(i).getTournamentId().equals(key)) {
                         tournamentList.get(i).SetNewTournament(newValue);

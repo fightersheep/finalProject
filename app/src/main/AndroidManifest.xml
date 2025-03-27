@@ -27,6 +27,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="34">
         <activity
+            android:name=".Activities.DoubleEliminationActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.TournamentDetailActivity"
             android:exported="false" />
         <activity

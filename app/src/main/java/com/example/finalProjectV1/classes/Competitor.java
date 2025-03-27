@@ -6,7 +6,8 @@ public class Competitor extends ShortUser {
     private TennisScore score;
     private boolean isWinner;
 
-    public Competitor(){super();}
+    public Competitor(){super();
+        this.score = new TennisScore();}
     public Competitor(String name) {
         super("COMP_" + UUID.randomUUID().toString().substring(0, 8),name);
         this.score = new TennisScore();
@@ -18,10 +19,17 @@ public class Competitor extends ShortUser {
         this.score = new TennisScore();
         this.isWinner = false;
     }
-    public Competitor copy(){
+
+    public Competitor(Competitor competitor) {
+        this.userId= competitor.userId;
+        this.name = competitor.name;
+        this.score = competitor.getScore();
+        this.isWinner = competitor.isWinner;
+    }
+
+    public Competitor Pcopy(){
         Competitor copy = new Competitor(this.name,this.userId);
-        copy.setScore(this.getScore());
-        copy.setWinner(this.isWinner);
+
         return copy;
     }
 

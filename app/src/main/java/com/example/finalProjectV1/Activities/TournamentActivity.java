@@ -27,7 +27,11 @@ import com.example.finalProjectV1.adapters.TournamentPagerAdapter;
 import com.example.finalProjectV1.classes.Competitor;
 import com.example.finalProjectV1.classes.Match;
 import com.example.finalProjectV1.classes.Round;
+import com.example.finalProjectV1.classes.ShortUser;
+import com.example.finalProjectV1.classes.SingleEliminationTeams;
 import com.example.finalProjectV1.classes.SingleEliminationTournament;
+import com.example.finalProjectV1.classes.Team;
+import com.example.finalProjectV1.classes.TennisScore;
 import com.example.finalProjectV1.classes.Tournament;
 import com.example.finalProjectV1.firebase.FirebaseManager;
 import com.example.finalProjectV1.firebase.FirebaseTournamentHelper;
@@ -60,6 +64,7 @@ public class TournamentActivity extends AppCompatActivity implements View.OnClic
     private boolean isFirstLoadComplete = false;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +76,6 @@ public class TournamentActivity extends AppCompatActivity implements View.OnClic
         tournamentHelper = new FirebaseTournamentHelper();
         String stringData = getIntent().getStringExtra("tournamentId");
         if(stringData != null){
-            Log.e("TAG", "onCreate: String data" );
             databaseReference = FirebaseManager.getInstance().getDatabase().getReference().child("tournaments").child(stringData);
             attachDatabaseListener();
         }
@@ -85,27 +89,75 @@ public class TournamentActivity extends AppCompatActivity implements View.OnClic
         valueEventListener = new ValueEventListener() {
             @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
-            if (snapshot.child("admin").child("id").getValue(String.class).compareTo(dataManeger.getUser().getUserId())==0 && !snapshot.child("started").getValue(Boolean.class)){
-                StartTournamentButton.setVisibility(View.VISIBLE);
-            }
-            String type = snapshot.child("type").getValue(String.class);
-            Tournament tournament;
-            switch (type) {
-                case "Single Elimination":
+                String Id =snapshot.child("admin").child("id").getValue(String.class);
+                if (Id.compareTo(dataManeger.getUser().getUserId()) == 0 && !snapshot.child("started").getValue(Boolean.class)) {
+                    StartTournamentButton.setVisibility(View.VISIBLE);
+                }
+                boolean doubles = snapshot.child("doubles").getValue(boolean.class);
+                Tournament tournament;
+                if (!doubles) {
                     tournament = snapshot.getValue(SingleEliminationTournament.class);
-                    break;
-                default:
-                    tournament = snapshot.getValue(SingleEliminationTournament.class);
-                    break;
-            }
+                } else {
+                    tournament = new SingleEliminationTeams();
 
-            Log.d("DatabaseUpdate", "Tournament updated: " + type);
-            pagerAdapter.setTournament(tournament);
+                    tournament.setTournamentId(snapshot.child("tournamentId").getValue(String.class));
+                    tournament.setName(snapshot.child("name").getValue(String.class));
+                    tournament.setStartdate(snapshot.child("startdate").getValue(String.class));
+                    tournament.setLocation(snapshot.child("location").getValue(String.class));
+                    tournament.setMaxParticipants(snapshot.child("maxParticipants").getValue(Integer.class));
+                    tournament.setStarted(snapshot.child("started").getValue(Boolean.class));
+                    tournament.setDoubles(snapshot.child("doubles").getValue(Boolean.class));
+
+
+                    // Get admin
+                    DataSnapshot adminSnapshot = snapshot.child("admin");
+                    if (adminSnapshot.exists()) {
+                        ShortUser admin = new ShortUser();
+                        admin.setId(adminSnapshot.child("id").getValue(String.class));
+                        admin.setName(adminSnapshot.child("name").getValue(String.class));
+                        tournament.setAdmin(admin);
+                    }
+
+                    // Get participants
+                    tournament.setParticipants(new ArrayList<>());
+                    DataSnapshot participantsSnapshot = snapshot.child("participants");
+                    for (DataSnapshot participantSnapshot : participantsSnapshot.getChildren()) {
+                        ShortUser participant = new ShortUser();
+                        participant.setId(participantSnapshot.child("id").getValue(String.class));
+                        participant.setName(participantSnapshot.child("name").getValue(String.class));
+                        tournament.getParticipants().add(participant);
+                    }
+
+                    // Get rounds and matches with teams as competitors
+                    tournament.setRounds(new ArrayList<>());
+                    DataSnapshot roundsSnapshot = snapshot.child("rounds");
+                    for (DataSnapshot roundSnapshot : roundsSnapshot.getChildren()) {
+                        Round round = new Round();
+                        round.setRoundNumber(roundSnapshot.child("roundNumber").getValue(Integer.class));
+
+                        List<Match> matches = new ArrayList<>();
+                        DataSnapshot matchesSnapshot = roundSnapshot.child("matches");
+                        for (DataSnapshot matchSnapshot : matchesSnapshot.getChildren()) {
+                            Match match = matchSnapshot.getValue(Match.class);
+                            // Create Team objects for competitors
+                            DataSnapshot comp1Snapshot = matchSnapshot.child("competitor1");
+                            match.setCompetitor1(comp1Snapshot.getValue(Team.class));
+                            // Do the same for competitor2
+                            DataSnapshot comp2Snapshot = matchSnapshot.child("competitor2");
+                            match.setCompetitor2(comp2Snapshot.getValue(Team.class));
+                            matches.add(match);
+                        }
+                        round.setMatches(matches);
+                        tournament.getRounds().add(round);
+                    }
+                }
+                pagerAdapter.setTournament(tournament);
                 if (!isFirstLoadComplete) {
                     isFirstLoadComplete = true;
                     // Do your one-time actions here
                     pagerAdapter.initializeTournament();
                 }
+
         }
 
         @Override

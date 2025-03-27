@@ -7,7 +7,7 @@ import java.util.List;
 public class TennisScore {
     private static final List<String> POINT_SCORES = Arrays.asList("0", "15", "30", "40", "AD");
     private int sets;
-    private int setsToWin;
+    private final int setsToWin;
     private int currentSet;
     private int games;
     private int points;

@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder> {
-    private List<ShortUser> dataList;
-    private OnItemClickListener listener;
+    private final List<ShortUser> dataList;
+    private final OnItemClickListener listener;
 
     public interface OnItemClickListener {
         void onItemClick(String key, String value);

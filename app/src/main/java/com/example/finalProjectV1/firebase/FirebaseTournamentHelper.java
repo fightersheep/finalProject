@@ -32,17 +32,6 @@ public class FirebaseTournamentHelper {
     public void saveTournament(Tournament tournament, OnAddToFirebase lisiner) {
         String tournamentId = tournament.getTournamentId();
         tournament.setTournamentId(tournamentId);
-
-        // Process all competitors in the tournament
-        for (Round round : tournament.getRounds()) {
-            for (Match match : round.getMatches()) {
-                ensureCompetitorId(match.getCompetitor1());
-                if (match.getCompetitor2() != null) {
-                    ensureCompetitorId(match.getCompetitor2());
-                }
-            }
-        }
-
         // Save tournament data directly
         DatabaseReference tournamentRef = databaseReference.child(TOURNAMENTS_PATH).child(tournamentId);
         tournamentRef.setValue(tournament)
@@ -99,20 +88,11 @@ public class FirebaseTournamentHelper {
                 .child("matches")
                 .child(matchId);
 
-        Map<String, Object> matchUpdates = new HashMap<>();
-        matchUpdates.put("competitor1", match.getCompetitor1());
-        matchUpdates.put("competitor2", match.getCompetitor2());
-        matchUpdates.put("complete", match.isComplete());
-        matchUpdates.put("winnerId", match.getWinnerId());
+        matchRef.setValue(match);
 
-        matchRef.updateChildren(matchUpdates)
-                .addOnSuccessListener(aVoid -> {
-                    // Match updated successfully
-                })
-                .addOnFailureListener(e -> {
-                    // Handle any errors
-                });
     }
+
+
 }
 
 

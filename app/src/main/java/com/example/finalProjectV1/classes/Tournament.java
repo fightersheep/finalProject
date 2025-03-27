@@ -10,13 +10,13 @@ import java.util.List;
     protected String tournamentId;
     protected String name;
     protected String type;
-    protected List<Round> rounds;
     protected List<ShortUser> participants;
     protected String Startdate;
     protected String location;
     protected int maxParticipants;
     protected boolean started;
     protected ShortUser admin;
+    boolean isDoubles;
 
     public ShortUser getAdmin() {
         return admin;
@@ -35,12 +35,18 @@ import java.util.List;
     }
 
     public Tournament() {
-        this.rounds = new ArrayList<>();
         this.participants = new ArrayList<>();
-
 
     }
 
+
+    public boolean isDoubles() {
+        return isDoubles;
+    }
+
+    public void setDoubles(boolean doubles) {
+        isDoubles = doubles;
+    }
 
     public Tournament(String tournamentId, int maxParticipants, String location, String startdate, List<ShortUser> participants, List<Round> rounds, String type, String name) {
         this.tournamentId = tournamentId;
@@ -48,7 +54,6 @@ import java.util.List;
         this.location = location;
         Startdate = startdate;
         this.participants = participants;
-        this.rounds = rounds;
         this.type = type;
         this.name = name;
         this.started =false;
@@ -90,13 +95,7 @@ import java.util.List;
         this.type = type;
     }
 
-    public List<Round> getRounds() {
-        return rounds;
-    }
 
-    public void setRounds(List<Round> rounds) {
-        this.rounds = rounds;
-    }
 
     public List<ShortUser> getParticipants() {
         return participants;
@@ -138,7 +137,7 @@ import java.util.List;
 
     }
 
-    public void initializeTournament(OnAddToFirebase lisiner){};
+    public void initializeTournament(){}
 
     public void SetNewTournament(Tournament tournament){
         this.tournamentId = tournament.tournamentId;
@@ -146,10 +145,25 @@ import java.util.List;
         this.location = tournament.getLocation();
         this.Startdate = tournament.Startdate;
         this.participants = tournament.getParticipants();
-        this.rounds = tournament.rounds;
         this.type = tournament.type;
         this.name = tournament.name;
         this.started =tournament.isStarted();
     }
+
+    public void moveToLosersBracket(int currentStage, int matchNum, Competitor loser) {
+    }
+
+    public void moveToNextWinnersRound(int currentStage, int matchNum, Competitor winner) {
+    }
+
+    public void moveToNextLosersRound(int currentStage, int matchNum, Competitor winner) {
+    }
+    public List<Round> getRounds(){
+        return java.util.Collections.emptyList();
+    }
+
+    public void setRounds(List<Round> rounds) {
+    }
+
 }
     // Getters and setters

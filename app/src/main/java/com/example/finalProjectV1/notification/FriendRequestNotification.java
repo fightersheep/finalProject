@@ -18,9 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FriendRequestNotification {
-    private DatabaseReference databaseRef;
+    private final DatabaseReference databaseRef;
     private ValueEventListener valueEventListener;
-    private Context context;
+    private final Context context;
 
     public FriendRequestNotification(Context context) {
         this.context = context;

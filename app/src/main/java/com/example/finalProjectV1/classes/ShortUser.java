@@ -20,4 +20,9 @@ public class ShortUser {
     public void setId(String key) { this.userId = key; }
     public String getName() { return name; }
     public void setName(String value) { this.name = value; }
+
+    public void setUser(ShortUser user1) {
+        this.userId =user1.userId;
+        this.name = user1.name;
+    }
 }

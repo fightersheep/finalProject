@@ -12,7 +12,9 @@ public class Match {
     private String winnerId;
 
     public Match() {
-        // Required empty constructor for Firebase
+        competitor2 = new Competitor();
+        competitor1 = new Competitor();
+
     }
 
 
